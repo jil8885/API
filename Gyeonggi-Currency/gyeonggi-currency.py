@@ -55,7 +55,7 @@ for line in reader:
         data["name"] = storeItem[1]
         for x in storeItem[2:]:
             if x.startswith("경기도"):
-                data["address"] = x
+                pass
             elif x.startswith("031-") or x.startswith("02-") or x.startswith("070-") or x.startswith("010-"):
                 data["telephone"] = x
             elif x.isdigit() or isfloat(x):
@@ -67,17 +67,13 @@ for line in reader:
                     pass
             elif len(x.split("-")) == 3 and x.split("-")[0].isdigit() and x.split("-")[1].isdigit() and x.split("-")[2].isdigit():
                 pass
-            elif x == "":
-                pass
+
             elif "-" in x or "," in x:
                 if "-" in x:
                     y = x.split("-")
                 else:
                     y = x.split(",")
                 data["bigCategory"] = y[0].strip()
-                data["smallCategory"] = y[1].strip()
-            else:
-                print(x)
         result[regionKeys[storeItem[0]]].append(data)         
 f.close()
 
