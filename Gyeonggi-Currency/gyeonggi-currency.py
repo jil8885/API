@@ -8,6 +8,8 @@ def isfloat(value):
   except ValueError:
     return False
 
+def hasNumbers(inputString):
+    return any(char.isdigit() for char in inputString)
 
 f = open('ggcurrency.csv', 'r', encoding='cp949')
 reader = csv.reader(f)
@@ -46,6 +48,7 @@ regionKeys = {
     "화성시" : "hwaseong"
 }
 result = {}
+kind = []
 for line in reader:
     storeItem = list(line)
     if storeItem[0] in regionKeys.keys():
@@ -73,7 +76,35 @@ for line in reader:
                     y = x.split("-")
                 else:
                     y = x.split(",")
-                data["bigCategory"] = y[0].strip()
+                category = y[0].strip()
+                if category not in kind and not hasNumbers(category) and "." not in category and category != '':
+                    if category in ['여행', '숙박업']:
+                        data['category'] = 'trip'
+                        data['outputcat'] = '숙박업'
+                    elif category in ['한식', '치킨', '떡류'] or '음식' in category or '식품' in category or category == '인삼':
+                        data['category'] = 'food'
+                        data['outputcat'] = '식품/음료'
+                    elif category in ['학원', '서적문구', '교육서비스업', '교육서비스']:
+                        data['category'] = 'edu'
+                        data['outputcat'] = '교육'
+                    elif category in ['병원', '약국', '의원', '보건위생', '기타의료기관', '보건업', '보건업 및 사회복지서비스업']:
+                        data['category'] = 'med'
+                        data['outputcat'] = '의료'
+                    elif '유통' in category or category in ['편의점']:
+                        data['category'] = 'shop'
+                        data['outputcat'] = '마트/편의점'
+                    elif '자동차' in category or '연료' in category or '수리' in category:
+                        data['category'] = 'car'
+                        data['outputcat'] = '자동차 정비/주유'
+                    elif category in ['미용', '화장품']:
+                        data['category'] = 'beauty'
+                        data['outputcat'] = '미용/화장품'
+                    elif '도매' in category or '소매' in category:
+                        data['category'] = 'othershop'
+                        data['outputcat'] = '기타판매'
+                    else:
+                        data['category'] = 'other'
+                        data['outputcat'] = category
         result[regionKeys[storeItem[0]]].append(data)         
 f.close()
 
