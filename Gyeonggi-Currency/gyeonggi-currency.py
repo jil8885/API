@@ -1,4 +1,4 @@
-import csv, json
+import csv, json, sqlite3
 
 
 def isfloat(value):
@@ -77,7 +77,7 @@ for line in reader:
                 else:
                     y = x.split(",")
                 category = y[0].strip()
-                if category not in kind and not hasNumbers(category) and "." not in category and category != '':
+                if not hasNumbers(category) and "." not in category and category != '':
                     if category in ['여행', '숙박업']:
                         data['category'] = 'trip'
                         data['outputcat'] = '숙박업'
@@ -108,10 +108,29 @@ for line in reader:
         result[regionKeys[storeItem[0]]].append(data)         
 f.close()
 
+conn = sqlite3.connect('store.db')
+cur = conn.cursor()
 with open("all.json", "w") as f:
     f.write(json.dumps(result, ensure_ascii=False))
 for x in regionKeys.values():
     with open(x + ".json", "w") as f:
         data = {"region" : x, "data" : result[x]}
         f.write(json.dumps(data, ensure_ascii=False))
+    cur.execute("DROP TABLE IF EXISTS " + x)
+    cur.execute("create table " + x + "(name TEXT NOT NULL, phone TEXT, lat TEXT , lng TEXT, category text not null, outputcat text)")
+    conn.commit()
+    sql = 'insert into ' + x + ' values (?, ?, ? ,?, ? ,?)'
+    for store in result[x]:
+        if 'category' not in store.keys() or 'outputcat' not in store.keys():
+            store['category'] = 'other'
+            store['outputcat'] = '기타'
+        if 'latitude' not in store.keys() or 'longitude' not in store.keys():
+            store['latitude'] = None
+            store['longitude'] = None
+        if 'telephone' not in store.keys():
+            store['telephone'] = None
+        cur.execute(sql, (store['name'], store['telephone'], store['latitude'], store['longitude'], store['category'], store['outputcat']))
 
+conn.commit()
+cur.close()
+conn.close()
