@@ -26,10 +26,10 @@ else:
     plateno1 = ''
 now = datetime.now()
 if data["suwon"] != plateno1:
-    print("통과 : {}-{}-{}".format(weekdays[now.weekday()], now.hour, now.minute))
-    log.write("수원 통과 : {}-{}-{}".format(weekdays[now.weekday()], now.hour, now.minute))
+    print("통과 : {}-{}-{}".format(weekdays[now.weekday()], now.hour+9, now.minute))
+    log.write("수원 통과 : {}-{}-{}".format(weekdays[now.weekday()], now.hour+9, now.minute))
 else:
-    print("진행중 : {}-{}-{}".format(weekdays[now.weekday()], now.hour, now.minute))
+    print("진행중 : {}-{}-{}".format(weekdays[now.weekday()], now.hour+9, now.minute))
 result["suwon"] = plateno1
 
 # 한양대 출발 시간
@@ -42,10 +42,10 @@ if soup.find('plateNo1') != None:
 else:
     plateno1 = ''
 if data["hanyang"] != plateno1:
-    print("통과 : {}-{}-{}".format(weekdays[now.weekday()], now.hour, now.minute))
-    log.write("한양대 통과 : {}-{}-{}".format(weekdays[now.weekday()], now.hour, now.minute))
+    print("통과 : {}-{}-{}".format(weekdays[now.weekday()], now.hour+9, now.minute))
+    log.write("한양대 통과 : {}-{}-{}".format(weekdays[now.weekday()], now.hour+9, now.minute))
 else:
-    print("진행중 : {}-{}-{}".format(weekdays[now.weekday()], now.hour, now.minute))
+    print("진행중 : {}-{}-{}".format(weekdays[now.weekday()], now.hour+9, now.minute))
 result["hanyang"] = plateno1
 
 # 신안산대 출발시간
@@ -59,10 +59,10 @@ else:
     plateno1 = ''
 
 if data["ansan"] != plateno1:
-    print("통과 : {}-{}-{}".format(weekdays[now.weekday()], now.hour, now.minute))
-    log.write("안산 통과 : {}-{}-{}".format(weekdays[now.weekday()], now.hour, now.minute))
+    print("통과 : {}-{}-{}".format(weekdays[now.weekday()], now.hour+9, now.minute))
+    log.write("안산 통과 : {}-{}-{}".format(weekdays[now.weekday()], now.hour+9, now.minute))
 else:
-    print("진행중 : {}-{}-{}".format(weekdays[now.weekday()], now.hour, now.minute))
+    print("진행중 : {}-{}-{}".format(weekdays[now.weekday()], now.hour+9, now.minute))
 
 result["ansan"] = plateno1
 
